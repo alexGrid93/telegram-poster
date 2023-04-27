@@ -49,7 +49,7 @@ bot.command("new", (ctx) => {
 
   // Выводим клавиатуру
   ctx.reply(
-    "_",
+    "Поехали!",
     Markup.keyboard([
       ["Ввести название", "Ввести цену"],
       ["Ввести ссылку", "🔎 Предпросмотр"],
@@ -75,26 +75,34 @@ bot.hears("🔎 Предпросмотр", (ctx) => {
   const description = generateDescription(caption);
   console.log(photos);
   if (!photos) {
-    ctx.reply(description);
+    ctx.reply(description, { disable_web_page_preview: true });
   } else if (Array.isArray(photos)) {
     photos[0].caption = description;
-    ctx.replyWithMediaGroup(photos);
+    ctx.replyWithMediaGroup(photos, { disable_web_page_preview: true });
   } else {
-    ctx.replyWithPhoto(photos, { caption: description });
+    ctx.replyWithPhoto(photos, {
+      caption: description,
+      disable_web_page_preview: true,
+    });
   }
 });
 
 bot.hears("🏒 Херануть в канал!", async (ctx) => {
   const description = generateDescription(caption);
   if (!photos) {
-    await ctx.telegram.sendMessage(CHAT_ID, description);
+    await ctx.telegram.sendMessage(CHAT_ID, description, {
+      disable_web_page_preview: true,
+    });
   } else if (Array.isArray(photos)) {
     photos[0].caption = description;
     // Отправляем альбом фотографий в канал
-    await ctx.telegram.sendMediaGroup(CHAT_ID, photos);
+    await ctx.telegram.sendMediaGroup(CHAT_ID, photos, {
+      disable_web_page_preview: true,
+    });
   } else {
     await ctx.telegram.sendPhoto(CHAT_ID, photos, {
       caption: description,
+      disable_web_page_preview: true,
     });
   }
 });
@@ -105,6 +113,15 @@ bot.on("text", (ctx) => {
     caption[currentField] = ctx.message.text;
     console.log(caption[currentField]);
   }
+  // Выводим клавиатуру
+  ctx.reply(
+    "Отлично! Что дальше?",
+    Markup.keyboard([
+      ["Ввести название", "Ввести цену"],
+      ["Ввести ссылку", "🔎 Предпросмотр"],
+      ["🏒 Херануть в канал!"],
+    ]).resize()
+  );
 });
 
 bot.on("media_group", async (ctx) => {
