@@ -1,8 +1,8 @@
 import { Telegraf, Markup } from "telegraf";
 import mediaGroup from "telegraf-media-group";
 
-const BOT_API = "6148494384:AAHOCFvHsK3PrJKtuvwLJjHGompVy6v2AHw";
-const CHAT_ID = "-1001934754785";
+const BOT_API = "";
+const CHAT_ID = "";
 
 const bot = new Telegraf(BOT_API);
 
